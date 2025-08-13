@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Mon espace — Cablinker</title>
+<link rel="stylesheet" href="/styles.css"/></head>
+<body>
+<nav class="nav">
+  <div class="left">
+    <a href="/"><img src="/logo.svg" height="28"/></a>
+    <input class="search" id="q" placeholder="Rechercher sur Cablinker">
+  </div>
+  <div class="right">
+    <a href="/listings.html">Annonces</a>
+    <a class="btn primary" href="/new-listing.html">Déposer une annonce</a>
+  </div>
+</nav>
+<main class="container">
+  <h2 style="margin-top:8px">Bienvenue <span id="helloName"></span></h2>
+  <div class="kpis" style="margin-top:12px">
+    <div class="kpi"><div class="icon">📄</div><div><div class="small">Mes annonces</div><div id="kpiListings" style="font-size:20px;font-weight:700">0</div></div></div>
+    <div class="kpi"><div class="icon">💬</div><div><div class="small">Messages</div><div id="kpiMsgs" style="font-size:20px;font-weight:700">0</div></div></div>
+    <div class="kpi"><div class="icon">⭐</div><div><div class="small">Favoris</div><div style="font-size:20px;font-weight:700">Bientôt</div></div></div>
+  </div>
+  <div class="tiles">
+    <div class="tile">
+      <div class="title">Annonces</div>
+      <div class="small">Créer, gérer et suivre vos annonces.</div>
+      <div><a class="btn" href="/new-listing.html">Déposer</a> <a class="btn" href="/dashboard.html">Gérer</a></div>
+    </div>
+    <div class="tile">
+      <div class="title">Messagerie</div>
+      <div class="small">Retrouvez toutes vos conversations.</div>
+      <div><a class="btn" href="/dashboard.html#threads">Ouvrir</a></div>
+    </div>
+    <div class="tile">
+      <div class="title">Paramètres</div>
+      <div class="small">Modifier vos informations de contact.</div>
+      <div><a class="btn" id="logoutBtn">Se déconnecter</a></div>
+    </div>
+  </div>
+  <h3 style="margin-top:24px">Dernières annonces publiées</h3>
+  <div id="homeListings" class="grid"></div>
+</main>
+<footer class="container footer">© Cablinker</footer>
+<script src="/web.js"></script>
+</body></html>

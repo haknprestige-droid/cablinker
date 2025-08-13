@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Déposer une annonce — Cablinker</title><link rel="stylesheet" href="/styles.css"/></head>
+<body>
+<nav class="nav">
+  <div class="left"><a href="/"><img src="/logo.svg" height="28"/></a></div>
+  <div class="right"><a class="btn" href="/dashboard.html">Mon tableau de bord</a></div>
+</nav>
+<main class="container"><h2>Déposer une annonce</h2>
+<form id="formNewListing" class="card">
+<div class="row">
+  <div><label class="label">Domaine</label><select name="domaine" required><option value="vtc">VTC</option><option value="taxi">Taxi</option></select></div>
+  <div><label class="label">Type</label><select name="type" required><option value="location_vehicule">Location véhicule (VTC)</option><option value="vente_vehicule">Vente véhicule (VTC)</option><option value="location_gerance_ads">Location-gérance ADS (Taxi)</option><option value="vente_ads">Vente ADS (Taxi)</option></select></div>
+</div>
+<div class="row">
+  <div><label class="label">Ville</label><input class="input" name="city" required></div>
+  <div><label class="label">Code postal</label><input class="input" name="postal_code" required></div>
+</div>
+<div class="row">
+  <div><label class="label">Marque</label><input class="input" name="brand"></div>
+  <div><label class="label">Modèle</label><input class="input" name="model"></div>
+</div>
+<div class="row">
+  <div><label class="label">Année</label><input class="input" type="number" name="year"></div>
+  <div><label class="label">Tarif semaine (€) / Prix</label><input class="input" type="number" name="price"></div>
+</div>
+<label class="label">Options VTC</label>
+<div class="badges">
+  <label><input type="checkbox" name="options" value="Berlin"> Berlin</label>
+  <label><input type="checkbox" name="options" value="Confort"> Confort</label>
+  <label><input type="checkbox" name="options" value="Uber Green"> Uber Green</label>
+  <label><input type="checkbox" name="options" value="Uber XL"> Uber XL</label>
+  <label><input type="checkbox" name="options" value="Uber Van"> Uber Van</label>
+</div>
+<label class="label">Description</label><textarea class="input" name="description" rows="5" required></textarea>
+<div class="row">
+  <div><label class="label">Assurance RC/Circulation</label><select name="assurance"><option value="oui">Oui</option><option value="non">Non</option></select></div>
+  <div><label class="label">Caution demandée</label><select name="caution"><option value="non">Non</option><option value="oui">Oui</option></select></div>
+</div>
+<div class="row">
+  <div><label class="label">Montant caution (€)</label><input class="input" type="number" name="caution_amount"></div>
+  <div><label class="label">Photos (max 3)</label><input class="input" type="file" id="photoInput" accept="image/*" multiple></div>
+</div>
+<button class="btn" type="submit">Publier</button>
+<div class="small" id="newListingMsg"></div>
+</form></main>
+<footer class="container footer">© Cablinker</footer><script src="/web.js"></script></body></html>

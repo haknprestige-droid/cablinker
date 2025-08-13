@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Annonces — Cablinker</title><link rel="stylesheet" href="/styles.css"/></head>
+<body>
+<nav class="nav">
+  <div class="left">
+    <a href="/"><img src="/logo.svg" height="28"/></a>
+    <input class="search" id="search" placeholder="Rechercher (ex: Tesla, Paris)">
+  </div>
+  <div class="right">
+    <a class="btn primary" href="/new-listing.html">Déposer une annonce</a>
+  </div>
+</nav>
+<main class="container">
+  <div class="row">
+    <div><label class="label">Domaine</label><select id="filterDomain"><option value="">Tous</option><option value="vtc">VTC</option><option value="taxi">Taxi</option></select></div>
+    <div><label class="label">Type</label><select id="filterType"><option value="">Tous</option><option value="location_vehicule">Location véhicule</option><option value="vente_vehicule">Vente véhicule</option><option value="location_gerance_ads">Location-gérance ADS</option><option value="vente_ads">Vente ADS</option></select></div>
+  </div>
+  <div id="listings" class="grid" style="margin-top:16px"></div>
+</main>
+<footer class="container footer">© Cablinker</footer>
+<script src="/web.js"></script></body></html>
