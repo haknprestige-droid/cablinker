@@ -1,15 +1,20 @@
 
-const { json, bad, getDb, putObject, getObject, uuidv4, bcrypt } = require('./_common.js');
+const { db, json, bad, User, bcrypt, jwt, JWT_SECRET } = require('./_common.js');
 exports.handler = async (event) => {
-  if(event.httpMethod!=='POST') return json(405,{error:'Method'});
-  const { firstName, lastName, email, phone, address, password } = JSON.parse(event.body||'{}');
-  if(!firstName||!lastName||!email||!password) return bad('Champs requis');
-  const store = await getDb();
-  const key = `user:${email.toLowerCase()}`;
-  const exists = await getObject(store, key);
-  if(exists) return bad('Email déjà utilisé');
-  const hash = await bcrypt.hash(password, 10);
-  const user = { id: uuidv4(), firstName, lastName, email: email.toLowerCase(), phone, address, created_at: new Date().toISOString(), password_hash: hash, role:'user' };
-  await putObject(store, key, user);
-  return json(200, { ok:true });
+  if (event.httpMethod !== 'POST') return json(405, { error: 'Method Not Allowed' });
+  try{
+    await db();
+    const { firstName, lastName, email, phone, address, password } = JSON.parse(event.body || '{}');
+    if(!firstName || !lastName || !email || !password) return bad('Champs requis');
+    const e = String(email).toLowerCase();
+    const exists = await User.findOne({ email: e });
+    if (exists) return bad('Email déjà utilisé', 409);
+    const passwordHash = await bcrypt.hash(password, 10);
+    const user = await User.create({ firstName, lastName, email: e, phone, address, passwordHash });
+    const token = jwt.sign({ id: user._id.toString(), email: user.email, name: user.firstName+' '+user.lastName, admin: false }, JWT_SECRET, { expiresIn: '7d' });
+    return json(200, { token });
+  }catch(e){
+    console.error(e);
+    return bad('Erreur serveur', 500);
+  }
 };

@@ -1,14 +1,17 @@
 
-const { json, bad, auth, getDb, getObject } = require('./_common.js');
+const { db, json, bad, getAuthUser, Thread, Message } = require('./_common.js');
 exports.handler = async (event) => {
   try{
-    const user = auth(event); const thread_id = (event.queryStringParameters && event.queryStringParameters.thread_id) || null;
+    const u = getAuthUser(event);
+    await db();
+    const qs = event.queryStringParameters || {};
+    const thread_id = qs.thread_id;
     if(!thread_id) return bad('thread_id requis');
-    const store = await getDb(); const thread = await getObject(store, `thread:${thread_id}`);
-    if(!thread) return bad('Thread introuvable',404);
-    if(user.id !== thread.owner_id && user.id !== thread.interested_id) return bad('Accès refusé',403);
-    const msgs = await getObject(store, `msgs:${thread_id}`) || [];
-    const arr = msgs.map(m => ({ ...m, sender_name: (m.sender_id===user.id ? 'Vous' : 'Autre') }));
+    const t = await Thread.findById(thread_id).lean();
+    if(!t) return bad('Thread introuvable',404);
+    if(String(u.id)!==String(t.ownerId) && String(u.id)!==String(t.interestedId)) return bad('Accès refusé',403);
+    const msgs = await Message.find({ threadId: t._id }).sort({ createdAt: 1 }).lean();
+    const arr = msgs.map(m => ({ sender_name: String(m.senderId)===String(u.id)?'Vous':'Autre', body: m.body, created_at: m.createdAt }));
     return json(200, arr);
-  }catch(e){ return json(401,{error:'Unauthorized'}); }
+  }catch(e){ return json(401, { error:'Unauthorized' }); }
 };

@@ -1,12 +1,13 @@
 {
   "name": "cablinker",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
-    "@netlify/blobs": "^6.0.0",
-    "uuid": "^9.0.0",
+    "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.41.0",
     "jsonwebtoken": "^9.0.2",
-    "axios": "^1.7.2"
+    "mongoose": "^8.5.0",
+    "uuid": "^9.0.0"
   }
 }

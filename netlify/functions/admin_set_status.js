@@ -1,12 +1,21 @@
 
-const { json, bad, auth, ADMIN_EMAIL, getDb, getObject, putObject } = require('./_common.js');
+const { db, json, bad, getAuthUser, ADMIN_EMAIL, Listing } = require('./_common.js');
 exports.handler = async (event) => {
-  if(event.httpMethod!=='POST') return json(405,{error:'Method'});
-  const u = auth(event); if(!(ADMIN_EMAIL && u.email===ADMIN_EMAIL.toLowerCase())) return bad('Accès admin requis',403);
-  const { id, status } = JSON.parse(event.body||'{}'); if(!id||!status) return bad('Paramètres requis');
-  const store = await getDb(); const l = await getObject(store, `listing:${id}`); if(!l) return bad('Annonce introuvable',404);
-  if(['actif','suspendu','supprime','supprimer'].includes(status)){ l.status = (status==='supprimer')?'supprime':status; } else { return bad('Statut invalide'); }
-  await putObject(store, `listing:${id}`, l);
-  let idx = await getObject(store, 'list:index') || []; idx = idx.map(m => m.id===id ? {...m, status:l.status} : m); await putObject(store, 'list:index', idx);
-  return json(200, { ok:true, status:l.status });
+  if (event.httpMethod !== 'POST') return json(405, { error: 'Method Not Allowed' });
+  try{
+    const u = getAuthUser(event);
+    const isAdmin = (ADMIN_EMAIL && u.email.toLowerCase()===ADMIN_EMAIL);
+    if(!isAdmin) return bad('Accès admin requis',403);
+    await db();
+    const { id, status } = JSON.parse(event.body||'{}');
+    if(!id || !status) return bad('Paramètres requis');
+    const valid = ['actif','suspendu','supprime','supprimer'];
+    if(!valid.includes(status)) return bad('Statut invalide');
+    const final = (status==='supprimer')?'supprime':status;
+    const l = await Listing.findByIdAndUpdate(id, { status: final }, { new:true });
+    if(!l) return bad('Annonce introuvable',404);
+    return json(200, { ok:true, status: l.status });
+  }catch(e){
+    console.error(e); return bad('Erreur serveur', 500);
+  }
 };
